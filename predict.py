@@ -1,7 +1,7 @@
 import json
 import argparse
 from deepfrier.Predictor import Predictor
-
+import tensorflow as tf
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -19,6 +19,12 @@ if __name__ == "__main__":
     parser.add_argument('--use_guided_grads', help="Use guided grads to compute gradCAM.", action="store_true")
     parser.add_argument('--saliency', help="Compute saliency maps for every protein and every MF-GO term/EC number.", action="store_true")
     args = parser.parse_args()
+
+    # Fix using full GPU's memory of TensorFlow
+    # Memory increase from 600M -> 1500M on GPU 0
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True)
 
     with open(args.model_config) as json_file:
         params = json.load(json_file)
