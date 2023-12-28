@@ -1,5 +1,6 @@
 import json
 import argparse
+import pathlib
 from deepfrier.Predictor import Predictor
 import tensorflow as tf
 
@@ -11,7 +12,12 @@ if __name__ == "__main__":
     parser.add_argument('--cmap_csv', type=str,  help="Catalogue with chain to file path mapping.")
     parser.add_argument('--pdb_dir', type=str,  help="Directory with PDB files of predicted Rosetta/DMPFold structures.")
     parser.add_argument('--fasta_fn', type=str,  help="Fasta file with protein sequences.")
-    parser.add_argument('--model_config', type=str, default='./trained_models/model_config.json', help="JSON file with model names.")
+    parser.add_argument(
+        '--model_config', 
+        type=str, 
+        default=str(pathlib.Path(__file__).parent / 'trained_models' / 'model_config.json'), 
+        help="JSON file with model names."
+    )
     parser.add_argument('-ont', '--ontology', type=str, default=['mf'], nargs='+', required=True, choices=['mf', 'bp', 'cc', 'ec'],
                         help="Gene Ontology/Enzyme Commission.")
     parser.add_argument('-o', '--output_fn_prefix', type=str, default='DeepFRI', help="Save predictions/saliency in file.")
