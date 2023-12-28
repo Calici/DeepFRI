@@ -45,6 +45,7 @@ if __name__ == "__main__":
     models = params['models']
 
     for ont in args.ontology:
+        models[ont] = str(pathlib.Path(__file__).parent / models[ont])
         predictor = Predictor(models[ont], gcn=gcn)
         if args.seq is not None:
             predictor.predict(args.seq)
